@@ -3,7 +3,5 @@
 ## Deploy
 
 ```bash
-mvn package
-mvn javadoc:jar
-mvn deploy
+mvn clean deploy
 ```
