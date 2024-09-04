@@ -103,11 +103,11 @@ public abstract class CoinbaseNetHttpClient implements CoinbaseClient {
                 if (valueNode.isArray()) {
                     valueNode.forEach(arrayElement -> {
                         String value = URLEncoder.encode(arrayElement.asText(), StandardCharsets.UTF_8);
-                        queryParameters.add(key + "=" + value);
+                        queryParameters.add(String.format("%s=%s", key, value));
                     });
                 } else {
                     String value = URLEncoder.encode(valueNode.asText(), StandardCharsets.UTF_8);
-                    queryParameters.add(key + "=" + value);
+                    queryParameters.add(String.format("%s=%s", key, value));
                 }
             });
 
