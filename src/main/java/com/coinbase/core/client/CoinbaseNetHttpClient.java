@@ -53,7 +53,7 @@ public abstract class CoinbaseNetHttpClient implements CoinbaseClient {
         if (httpMethod == HttpMethod.GET || httpMethod == HttpMethod.DELETE) {
             String queryParams = toQueryParams(options);
             bodyPublisher = HttpRequest.BodyPublishers.noBody();
-            callUrl = String.format("%s%s%s", baseUrl, path, options);
+            callUrl = String.format("%s%s%s", baseUrl, path, queryParams);
             authHeaders = credentials.generateAuthHeaders(httpMethod.name(), URI.create(callUrl), "");
         } else {
             String jsonPayload = toJsonPayload(options);
