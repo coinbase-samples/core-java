@@ -16,43 +16,7 @@
 
 package com.coinbase.core.utils;
 
-import com.coinbase.core.errors.CoinbaseClientException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import static com.coinbase.core.utils.Constants.EMPTY_STRING;
-
 public class Utils {
-    public static String toJsonString(ObjectMapper mapper, Object requestObject) throws CoinbaseClientException {
-        if (requestObject == null) {
-            return EMPTY_STRING;
-        }
-
-        try {
-            return mapper.writeValueAsString(requestObject);
-        } catch (Throwable e) {
-            throw new CoinbaseClientException("Failed to write request object as String", e);
-        }
-    }
-
-    public static String appendQueryParams(String queryParams, String key, String value) {
-        if (isNullOrEmpty(value)) {
-            return queryParams;
-        }
-        return String.format("%s%s%s=%s", queryParams, queryParams.isEmpty() ? "?" : "&", key, value);
-    }
-
-    public static String appendAllQueryParams(Object[] params, String key, String queryString) {
-        if (params != null) {
-            for (Object param : params) {
-                if (param == null) {
-                    continue;
-                }
-                queryString = appendQueryParams(queryString, key, param.toString());
-            }
-        }
-        return queryString;
-    }
-
     public static boolean isNullOrEmpty(String str) {
         return str == null || str.trim().isEmpty();
     }
