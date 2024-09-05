@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package com.coinbase.core.credentials;
+package com.coinbase.core.common;
 
-import java.net.URI;
-import java.util.Map;
-
-public interface CoinbaseCredentials {
-    Map<String, String> generateAuthHeaders(String httpMethod, URI uri, String body);
+public enum HttpMethod {
+    GET,
+    POST,
+    DELETE,
+    PATCH,
+    PUT
 }

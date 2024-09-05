@@ -14,11 +14,8 @@
  * limitations under the License.
  */
 
-package com.coinbase.core.credentials;
+package com.coinbase.core.errors;
 
-import java.net.URI;
-import java.util.Map;
-
-public interface CoinbaseCredentials {
-    Map<String, String> generateAuthHeaders(String httpMethod, URI uri, String body);
+public interface CoinbaseErrorMessage {
+    public CoinbaseException createCoinbaseException();
 }

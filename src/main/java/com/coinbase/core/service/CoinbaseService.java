@@ -14,11 +14,18 @@
  * limitations under the License.
  */
 
-package com.coinbase.core.credentials;
+package com.coinbase.core.service;
 
-import java.net.URI;
-import java.util.Map;
+import com.coinbase.core.common.HttpMethod;
+import com.fasterxml.jackson.core.type.TypeReference;
 
-public interface CoinbaseCredentials {
-    Map<String, String> generateAuthHeaders(String httpMethod, URI uri, String body);
+import java.util.List;
+
+public interface CoinbaseService {
+    <T> T request(
+            HttpMethod httpMethod,
+            String path,
+            Object options,
+            List<Integer> expectedStatusCodes,
+            TypeReference<T> responseClass);
 }

@@ -20,11 +20,6 @@ import java.util.regex.Pattern;
 
 public class Constants {
     public static final String HMAC_SHA256 = "HmacSHA256";
-    public static final String HTTP_METHOD_GET = "GET";
-    public static final String HTTP_METHOD_POST = "POST";
-    public static final String HTTP_METHOD_PATCH = "PATCH";
-    public static final String HTTP_METHOD_PUT = "PUT";
-    public static final String HTTP_METHOD_DELETE = "DELETE";
     public static final String EMPTY_STRING = "";
     public static final Pattern BASE64_PATTERN = Pattern.compile("^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$");
 }
