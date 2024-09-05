@@ -20,7 +20,7 @@
   <name>Coinbase Java Core</name>
   <description>Core Java Libraries for Sample Applications</description>
   <groupId>com.coinbase.core</groupId>
-  <version>0.1.0</version>
+  <version>1.0.0</version>
   <url>https://github.com/coinbase-samples/core-java</url>
   <licenses>
     <license>
