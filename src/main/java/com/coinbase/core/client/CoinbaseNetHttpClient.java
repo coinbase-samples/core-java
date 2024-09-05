@@ -19,6 +19,7 @@ package com.coinbase.core.client;
 import com.coinbase.core.common.HttpMethod;
 import com.coinbase.core.credentials.CoinbaseCredentials;
 import com.coinbase.core.errors.CoinbaseClientException;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,7 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class CoinbaseNetHttpClient implements CoinbaseClient {
-    protected static final ObjectMapper mapper = new ObjectMapper();
+    protected final ObjectMapper mapper;
     private final HttpClient client;
     private final CoinbaseCredentials credentials;
     private final String baseUrl;
@@ -43,12 +44,20 @@ public abstract class CoinbaseNetHttpClient implements CoinbaseClient {
         this.credentials = credentials;
         this.baseUrl = baseUrl;
         this.client = HttpClient.newHttpClient();
+        this.mapper = configureObjectMapper();
     }
 
     public CoinbaseNetHttpClient(CoinbaseCredentials credentials, String baseUrl, HttpClient client) {
         this.credentials = credentials;
         this.baseUrl = baseUrl;
         this.client = client;
+        this.mapper = configureObjectMapper();
+    }
+
+    private ObjectMapper configureObjectMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        return mapper;
     }
 
     public CoinbaseCredentials getCredentials() {
