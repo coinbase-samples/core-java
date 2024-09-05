@@ -136,7 +136,7 @@ public abstract class CoinbaseNetHttpClient implements CoinbaseClient {
                 }
             });
 
-            return String.join("&", queryParameters);
+            return String.format("?%s", String.join("&", queryParameters));
         } catch (Throwable e) {
             throw new CoinbaseClientException("Failed to convert object to query parameters", e);
         }
@@ -144,7 +144,7 @@ public abstract class CoinbaseNetHttpClient implements CoinbaseClient {
 
     private String toJsonPayload(Object object) throws CoinbaseClientException {
         try {
-            return mapper.writeValueAsString(object);
+            return this.mapper.writeValueAsString(object);
         } catch (Throwable e) {
             throw new CoinbaseClientException("Failed to convert object to json payload", e);
         }
