@@ -21,6 +21,7 @@ import com.coinbase.core.credentials.CoinbaseCredentials;
 import com.coinbase.core.errors.CoinbaseClientException;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -56,7 +57,10 @@ public abstract class CoinbaseNetHttpClient implements CoinbaseClient {
 
     private ObjectMapper configureObjectMapper() {
         ObjectMapper mapper = new ObjectMapper();
+        // Include non-null properties during serialization
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        // Ignore unknown fields during deserialization
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         return mapper;
     }
 
