@@ -62,6 +62,8 @@ public abstract class CoinbaseNetHttpClient implements CoinbaseClient {
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         // Ignore unknown fields during deserialization
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        // Read unknown enum values as null instead of failing
+        mapper.configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true);
         // Register JSR310 module for Java 8 date/time types
         mapper.registerModule(new JavaTimeModule());
         return mapper;
