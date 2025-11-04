@@ -20,7 +20,7 @@
   <name>Coinbase Java Core</name>
   <description>Core Java Libraries for Sample Applications</description>
   <groupId>com.coinbase.core</groupId>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
   <url>https://github.com/coinbase-samples/core-java</url>
   <licenses>
     <license>
@@ -168,6 +168,11 @@
     <dependency>
       <groupId>com.fasterxml.jackson.jaxrs</groupId>
       <artifactId>jackson-jaxrs-json-provider</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-jsr310</artifactId>
       <version>${jackson.version}</version>
     </dependency>
   </dependencies>

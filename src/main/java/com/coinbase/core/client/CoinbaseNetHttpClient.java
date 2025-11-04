@@ -24,6 +24,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.net.URI;
 import java.net.URLEncoder;
@@ -61,6 +62,8 @@ public abstract class CoinbaseNetHttpClient implements CoinbaseClient {
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         // Ignore unknown fields during deserialization
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        // Register JSR310 module for Java 8 date/time types
+        mapper.registerModule(new JavaTimeModule());
         return mapper;
     }
 
