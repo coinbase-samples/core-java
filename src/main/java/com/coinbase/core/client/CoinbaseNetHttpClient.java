@@ -19,9 +19,7 @@ package com.coinbase.core.client;
 import com.coinbase.core.common.HttpMethod;
 import com.coinbase.core.credentials.CoinbaseCredentials;
 import com.coinbase.core.errors.CoinbaseClientException;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -36,6 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.coinbase.core.utils.Utils;
+
 public abstract class CoinbaseNetHttpClient implements CoinbaseClient {
     protected final ObjectMapper mapper;
     private final HttpClient client;
@@ -46,27 +46,14 @@ public abstract class CoinbaseNetHttpClient implements CoinbaseClient {
         this.credentials = credentials;
         this.baseUrl = baseUrl;
         this.client = HttpClient.newHttpClient();
-        this.mapper = configureObjectMapper();
+        this.mapper = Utils.configureObjectMapper();
     }
 
     public CoinbaseNetHttpClient(CoinbaseCredentials credentials, String baseUrl, HttpClient client) {
         this.credentials = credentials;
         this.baseUrl = baseUrl;
         this.client = client;
-        this.mapper = configureObjectMapper();
-    }
-
-    private ObjectMapper configureObjectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        // Include non-null properties during serialization
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        // Ignore unknown fields during deserialization
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        // Read unknown enum values as null instead of failing
-        mapper.configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true);
-        // Register JSR310 module for Java 8 date/time types
-        mapper.registerModule(new JavaTimeModule());
-        return mapper;
+        this.mapper = Utils.configureObjectMapper();
     }
 
     public CoinbaseCredentials getCredentials() {
@@ -130,20 +117,39 @@ public abstract class CoinbaseNetHttpClient implements CoinbaseClient {
             String jsonString = mapper.writeValueAsString(object);
             JsonNode jsonNode = mapper.readTree(jsonString);
 
+            // Check if the object has no fields (e.g., all fields are @JsonIgnore)
+            if (!jsonNode.fields().hasNext()) {
+                return "";
+            }
+
             List<String> queryParameters = new ArrayList<>();
             jsonNode.fields().forEachRemaining(entry -> {
                 String key = URLEncoder.encode(entry.getKey(), StandardCharsets.UTF_8);
                 JsonNode valueNode = entry.getValue();
+                
+                // Skip null or missing values
+                if (valueNode.isNull() || valueNode.isMissingNode()) {
+                    return;
+                }
+                
                 if (valueNode.isArray()) {
                     valueNode.forEach(arrayElement -> {
-                        String value = URLEncoder.encode(arrayElement.asText(), StandardCharsets.UTF_8);
-                        queryParameters.add(String.format("%s=%s", key, value));
+                        // Skip null elements in arrays
+                        if (!arrayElement.isNull()) {
+                            String value = URLEncoder.encode(arrayElement.asText(), StandardCharsets.UTF_8);
+                            queryParameters.add(String.format("%s=%s", key, value));
+                        }
                     });
                 } else {
                     String value = URLEncoder.encode(valueNode.asText(), StandardCharsets.UTF_8);
                     queryParameters.add(String.format("%s=%s", key, value));
                 }
             });
+
+            // Return empty string if no parameters were added
+            if (queryParameters.isEmpty()) {
+                return "";
+            }
 
             return String.format("?%s", String.join("&", queryParameters));
         } catch (Throwable e) {
