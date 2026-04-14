@@ -1,5 +1,63 @@
-target
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+
+# Compiled / packaged
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+
+# Logs
+*.log
+
+# JVM crash / replay logs
+hs_err_pid*
+replay_pid*
+
+# Vim
 *.swp
+*~
+
+# Environment / secrets
+.env*
+
+# JetBrains
 .idea/
 *.iml
-.env*
+out/
+
+# Eclipse
+.classpath
+.project
+.settings/
+.factorypath
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# Gradle (if used alongside or in the future)
+.gradle/
+build/
+!**/src/**/build/
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
